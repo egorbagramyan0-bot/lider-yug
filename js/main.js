@@ -17,6 +17,7 @@ function initMobileMenu() {
       const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
       menuToggle.setAttribute('aria-expanded', !isExpanded);
       navLinks.classList.toggle('active');
+      document.documentElement.classList.toggle('menu-open', !isExpanded);
       document.body.classList.toggle('menu-open', !isExpanded);
       
       // Animate hamburger lines if they exist
@@ -39,6 +40,7 @@ function initMobileMenu() {
       if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
         menuToggle.setAttribute('aria-expanded', 'false');
         navLinks.classList.remove('active');
+        document.documentElement.classList.remove('menu-open');
         document.body.classList.remove('menu-open');
         const lines = menuToggle.querySelectorAll('line');
         if (lines.length === 3) {
@@ -54,6 +56,7 @@ function initMobileMenu() {
       link.addEventListener('click', () => {
         menuToggle.setAttribute('aria-expanded', 'false');
         navLinks.classList.remove('active');
+        document.documentElement.classList.remove('menu-open');
         document.body.classList.remove('menu-open');
         const lines = menuToggle.querySelectorAll('line');
         if (lines.length === 3) {
