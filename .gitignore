@@ -3,3 +3,5 @@ skills-lock.json
 scratch/
 image_info.txt
 *.log
+node_modules/
+dist/
