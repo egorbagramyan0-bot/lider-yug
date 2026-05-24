@@ -2633,12 +2633,19 @@ h4 { font-size: 1.25rem; }
 
   .route-form-group {
     margin-bottom: 0.85rem !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .route-select, .route-input {
-    font-size: 16px !important; /* Prevents auto zoom in iOS */
-    padding: 0.75rem 0.85rem !important;
-    height: 48px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    height: 52px !important;
+    padding: 0 16px !important;
+    font-size: 16px !important;
   }
 
   #widget-submit-btn {
@@ -2677,13 +2684,28 @@ h4 { font-size: 1.25rem; }
     grid-column: span 1 !important;
   }
 
+  .form-field {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   .form-field input, .form-field select, .form-field textarea {
     font-size: 16px !important;
-    padding: 0.75rem 0.85rem !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
 
   .form-field input, .form-field select {
-    height: 48px !important;
+    width: 100% !important;
+    height: 52px !important;
+    padding: 0 16px !important;
+  }
+
+  .form-field textarea {
+    width: 100% !important;
+    padding: 12px 16px !important;
   }
 
   /* Route Cards adaptation */
