@@ -407,8 +407,8 @@ function initBookingForm() {
         ticketPriceText = `${stopPrice} руб. × ${passengersCount}`;
         totalPriceText = `${totalCost} руб.`;
       } else {
-        ticketPriceText = "Цена уточняется";
-        totalPriceText = "Цена уточняется";
+        ticketPriceText = "Уточните цену у диспетчера";
+        totalPriceText = "Уточните цену у диспетчера";
       }
     }
 
@@ -600,8 +600,8 @@ function initBookingForm() {
     const ticketTotal = hasPrice ? (stopPrice * passengersCount) : 0;
     const totalCost = hasPrice ? (ticketTotal + luggageTotal) : 0;
 
-    const ticketPriceLabel = hasPrice ? `${stopPrice} руб. × ${passengersCount}` : "Цена уточняется";
-    const totalPriceLabel = hasPrice ? `${totalCost} руб.` : "Цена уточняется";
+    const ticketPriceLabel = hasPrice ? `${stopPrice} руб. × ${passengersCount}` : "Уточните цену у диспетчера";
+    const totalPriceLabel = hasPrice ? `${totalCost} руб.` : "Уточните цену у диспетчера";
 
     // Compose formatted email message
     let emailMessage = `Новая заявка с сайта Лидер Юг\n\n`;
