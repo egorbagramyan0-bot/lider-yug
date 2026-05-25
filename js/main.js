@@ -136,7 +136,8 @@ function initBookingForm() {
       title: 'Ростов-на-Дону → Волгоград',
       times: ['08:00', '17:00'],
       stops: [
-        { value: 'volgograd', text: 'Волгоград (Калач-на-Дону) — 3500 руб.', price: 3500 },
+        { value: 'volgograd', text: 'Волгоград — 3500 руб.', price: 3500 },
+        { value: 'volgograd_kolach', text: 'Волгоград (Колач-на-Дону) — 3500 руб.', price: 3500 },
         { value: 'surovikino', text: 'Суровикино, Чернышковский, Обливская — 3000 руб.', price: 3000 },
         { value: 'belaya_kalitva', text: 'Лиховской мост, Калитва, Шолоховский, Тацинская — 3000 руб.', price: 3000 },
         { value: 'morozovsk', text: 'Морозовск — 2700 руб.', price: 2700 }
@@ -178,7 +179,7 @@ function initBookingForm() {
       ? [{ value: 'rostov', text: 'Ростов-на-Дону' }] 
       : [
           { value: 'volgograd', text: 'Волгоград' },
-          { value: 'volgograd_kalach', text: 'Волгоград (Калач-на-Дону)' }
+          { value: 'volgograd_kolach', text: 'Волгоград (Колач-на-Дону)' }
         ];
 
     pickupLocations.forEach(loc => {
