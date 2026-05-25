@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBookingForm();
   initReviews();
   initContactForm();
+  initComfortCarousel();
 });
 
 // Mobile Navigation Menu Toggle
@@ -779,4 +780,89 @@ function initContactForm() {
       contactForm.reset();
     });
   }
+}
+
+// Comfort Section Carousel
+function initComfortCarousel() {
+  const container = document.getElementById('comfortCarousel');
+  if (!container) return;
+
+  const slides = container.querySelectorAll('.carousel-slide');
+  const indicators = container.querySelectorAll('.carousel-indicators .indicator');
+  const prevBtn = container.querySelector('.carousel-arrow.prev');
+  const nextBtn = container.querySelector('.carousel-arrow.next');
+
+  let currentIndex = 0;
+  let autoplayTimer = null;
+
+  function showSlide(index) {
+    if (index >= slides.length) currentIndex = 0;
+    else if (index < 0) currentIndex = slides.length - 1;
+    else currentIndex = index;
+
+    slides.forEach((slide, i) => {
+      if (i === currentIndex) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+
+    indicators.forEach((indicator, i) => {
+      if (i === currentIndex) {
+        indicator.classList.add('active');
+      } else {
+        indicator.classList.remove('active');
+      }
+    });
+  }
+
+  function nextSlide() {
+    showSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    showSlide(currentIndex - 1);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayTimer = setInterval(nextSlide, 4500);
+  }
+
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      startAutoplay();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      startAutoplay();
+    });
+  }
+
+  indicators.forEach(indicator => {
+    indicator.addEventListener('click', () => {
+      const index = parseInt(indicator.dataset.slide);
+      showSlide(index);
+      startAutoplay();
+    });
+  });
+
+  container.addEventListener('mouseenter', stopAutoplay);
+  container.addEventListener('mouseleave', startAutoplay);
+  container.addEventListener('touchstart', stopAutoplay, { passive: true });
+  container.addEventListener('touchend', startAutoplay, { passive: true });
+
+  startAutoplay();
 }

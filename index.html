@@ -298,8 +298,59 @@
   <!-- Comfort Image Section -->
   <section class="section-padding" style="background-color: white;" id="comfortSection">
     <div class="container grid-2">
-      <div>
-        <img src="public/passenger_comfort.webp" alt="Комфортабельный салон минивэна Лидер Юг" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-xl);" id="comfort-img" loading="lazy" decoding="async" width="600" height="400">
+      <div class="carousel-container" id="comfortCarousel">
+        <div class="carousel-track-wrapper">
+          <div class="carousel-track">
+            <div class="carousel-slide active">
+              <img src="public/car1.jpg" alt="Салон минивэна 1" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car2.png" alt="Минивэн Лидер Юг 2" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car3.jpg" alt="Салон минивэна 3" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car4.jpg" alt="Салон минивэна 4" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car5.jpg" alt="Салон минивэна 5" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car6.png" alt="Минивэн Лидер Юг 6" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car7.jpg" alt="Салон минивэна 7" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+            <div class="carousel-slide">
+              <img src="public/car8.jpg" alt="Салон минивэна 8" loading="lazy" decoding="async" width="600" height="400">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Controls -->
+        <button class="carousel-arrow prev" aria-label="Предыдущий слайд">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="carousel-arrow next" aria-label="Следующий слайд">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+        
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+          <button class="indicator active" data-slide="0" aria-label="Слайд 1"></button>
+          <button class="indicator" data-slide="1" aria-label="Слайд 2"></button>
+          <button class="indicator" data-slide="2" aria-label="Слайд 3"></button>
+          <button class="indicator" data-slide="3" aria-label="Слайд 4"></button>
+          <button class="indicator" data-slide="4" aria-label="Слайд 5"></button>
+          <button class="indicator" data-slide="5" aria-label="Слайд 6"></button>
+          <button class="indicator" data-slide="6" aria-label="Слайд 7"></button>
+          <button class="indicator" data-slide="7" aria-label="Слайд 8"></button>
+        </div>
       </div>
       <div>
         <h2>Наш главный приоритет — ваш комфорт и безопасность</h2>
