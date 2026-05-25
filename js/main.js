@@ -161,109 +161,85 @@ function initBookingForm() {
     "Ростов-на-Дону"
   ];
 
-  // Fare Matrix for Pair-based Tariff lookups
-  const fareMatrix = {
-    // Forward direction: Rostov-on-Don -> Volgograd
-    "Ростов-на-Дону|Волгоград": 3500,
-    "Ростов-на-Дону|Калач-на-Дону": 3500,
-    "Ростов-на-Дону|Суровикино": 3000,
-    "Ростов-на-Дону|Обливская": 3000,
-    "Ростов-на-Дону|Чернышковский": 3000,
-    "Ростов-на-Дону|Морозовск": 2700,
-    "Ростов-на-Дону|Тацинская": 3000,
-    "Ростов-на-Дону|Калитва": 3000,
-    "Ростов-на-Дону|Лиховской мост": 3000,
-    
-    "Шахты|Волгоград": 3500,
-    "Шахты|Калач-на-Дону": 3500,
-    "Шахты|Суровикино": 3000,
-    "Шахты|Обливская": 3000,
-    "Шахты|Чернышковский": 3000,
-    "Шахты|Морозовск": 2700,
-    "Шахты|Тацинская": 3000,
-    "Шахты|Калитва": 3000,
-    "Шахты|Лиховской мост": 3000,
+  // Fare Rules Matrix
+  const fareRules = [
+    {
+      direction: "Ростов-на-Дону → Волгоград",
+      pickup: ["Ростов-на-Дону", "Шахты", "Зверево"],
+      dropoff: ["Морозовск"],
+      price: 2700
+    },
+    {
+      direction: "Ростов-на-Дону → Волгоград",
+      pickup: ["Ростов-на-Дону", "Шахты", "Зверево"],
+      dropoff: ["Чернышковский", "Обливская", "Суровикино"],
+      price: 3000
+    },
+    {
+      direction: "Ростов-на-Дону → Волгоград",
+      pickup: ["Ростов-на-Дону", "Шахты", "Зверево"],
+      dropoff: ["Калач-на-Дону", "Волгоград"],
+      price: 3500
+    },
+    {
+      direction: "Ростов-на-Дону → Волгоград",
+      pickup: ["Лиховской мост", "Калитва", "Тацинская"],
+      dropoff: ["Чернышковский", "Обливская", "Суровикино"],
+      price: 2700
+    },
+    {
+      direction: "Ростов-на-Дону → Волгоград",
+      pickup: ["Лиховской мост", "Калитва", "Тацинская"],
+      dropoff: ["Калач-на-Дону", "Волгоград"],
+      price: 3000
+    },
+    {
+      direction: "Ростов-на-Дону → Волгоград",
+      pickup: ["Морозовск"],
+      dropoff: ["Калач-на-Дону", "Волгоград"],
+      price: 2700
+    },
+    {
+      direction: "Волгоград → Ростов-на-Дону",
+      pickup: ["Волгоград", "Калач-на-Дону"],
+      dropoff: ["Морозовск"],
+      price: 2700
+    },
+    {
+      direction: "Волгоград → Ростов-на-Дону",
+      pickup: ["Волгоград", "Калач-на-Дону"],
+      dropoff: ["Тацинская", "Калитва", "Лиховской мост"],
+      price: 3000
+    },
+    {
+      direction: "Волгоград → Ростов-на-Дону",
+      pickup: ["Волгоград", "Калач-на-Дону"],
+      dropoff: ["Зверево", "Шахты", "Ростов-на-Дону"],
+      price: 3500
+    },
+    {
+      direction: "Волгоград → Ростов-на-Дону",
+      pickup: ["Суровикино", "Обливская", "Чернышковский"],
+      dropoff: ["Тацинская", "Калитва", "Лиховской мост"],
+      price: 2700
+    },
+    {
+      direction: "Волгоград → Ростов-на-Дону",
+      pickup: ["Суровикино", "Обливская", "Чернышковский"],
+      dropoff: ["Зверево", "Шахты", "Ростов-на-Дону"],
+      price: 3000
+    }
+  ];
 
-    "Зверево|Волгоград": 3500,
-    "Зверево|Калач-на-Дону": 3500,
-    "Зверево|Суровикино": 3000,
-    "Зверево|Обливская": 3000,
-    "Зверево|Чернышковский": 3000,
-    "Зверево|Морозовск": 2700,
-    "Зверево|Тацинская": 3000,
-    "Зверево|Калитва": 3000,
-    "Зверево|Лиховской мост": 3000,
+  function getFare(direction, pickupStop, dropoffStop) {
+    if (!pickupStop || !dropoffStop) return null;
+    const rule = fareRules.find(rule =>
+      rule.direction === direction &&
+      rule.pickup.includes(pickupStop) &&
+      rule.dropoff.includes(dropoffStop)
+    );
 
-    "Лиховской мост|Волгоград": 3000,
-    "Лиховской мост|Калач-на-Дону": 3000,
-    "Калитва|Волгоград": 3000,
-    "Калитва|Калач-на-Дону": 3000,
-    "Тацинская|Волгоград": 3000,
-    "Тацинская|Калач-на-Дону": 3000,
-
-    "Морозовск|Волгоград": 2700,
-    "Морозовск|Калач-на-Дону": 2700,
-
-    "Чернышковский|Волгоград": 3000,
-    "Чернышковский|Калач-на-Дону": 3000,
-    "Обливская|Волгоград": 3000,
-    "Обливская|Калач-на-Дону": 3000,
-    "Суровикино|Волгоград": 3000,
-    "Суровикино|Калач-на-Дону": 3000,
-
-    // Backward direction: Volgograd -> Rostov-on-Don
-    "Волгоград|Ростов-на-Дону": 3500,
-    "Волгоград|Шахты": 3500,
-    "Волгоград|Зверево": 3500,
-    "Волгоград|Лиховской мост": 3000,
-    "Волгоград|Калитва": 3000,
-    "Волгоград|Тацинская": 3000,
-    "Волгоград|Морозовск": 2700,
-    "Волгоград|Чернышковский": 3000,
-    "Волгоград|Обливская": 3000,
-    "Волгоград|Суровикино": 3000,
-
-    "Калач-на-Дону|Ростов-на-Дону": 3500,
-    "Калач-на-Дону|Шахты": 3500,
-    "Калач-на-Дону|Зверево": 3500,
-    "Калач-на-Дону|Лиховской мост": 3000,
-    "Калач-на-Дону|Калитва": 3000,
-    "Калач-на-Дону|Тацинская": 3000,
-    "Калач-на-Дону|Морозовск": 2700,
-    
-    "Морозовск|Ростов-на-Дону": 2700,
-    "Морозовск|Шахты": 2700,
-    "Морозовск|Зверево": 2700,
-    "Морозовск|Лиховской мост": 2700,
-    "Морозовск|Калитва": 2700,
-    "Морозовск|Тацинская": 2700,
-
-    "Суровикино|Ростов-на-Дону": 3000,
-    "Суровикино|Шахты": 3000,
-    "Суровикино|Зверево": 3000,
-    "Суровикино|Лиховской мост": 2700,
-    "Суровикино|Калитва": 2700,
-    "Суровикино|Тацинская": 2700,
-
-    "Обливская|Ростов-на-Дону": 3000,
-    "Обливская|Шахты": 3000,
-    "Обливская|Зверево": 3000,
-    "Обливская|Лиховской мост": 2700,
-    "Обливская|Калитва": 2700,
-    "Обливская|Тацинская": 2700,
-
-    "Чернышковский|Ростов-на-Дону": 3000,
-    "Чернышковский|Шахты": 3000,
-    "Чернышковский|Зверево": 3000,
-    "Чернышковский|Лиховской мост": 2700,
-    "Чернышковский|Калитва": 2700,
-    "Чернышковский|Тацинская": 2700
-  };
-
-  function getFare(pickupStop, dropoffStop) {
-    if (!pickupStop || !dropoffStop) return 3500;
-    const key = `${pickupStop}|${dropoffStop}`;
-    return fareMatrix[key] ?? 3500;
+    return rule ? rule.price : null;
   }
 
   // Fare and Route Matrix
@@ -274,7 +250,7 @@ function initBookingForm() {
       stops: routeStopsForward
     },
     'volgograd-rostov': {
-      title: 'Волгоград → Rostov-на-Дону',
+      title: 'Волгоград → Ростов-на-Дону',
       times: ['08:00', '16:00'],
       stops: routeStopsBackward
     }
@@ -406,7 +382,7 @@ function initBookingForm() {
     const selectedPickupVal = pickupSelect.value;
     const selectedDropoffVal = dropoffSelect.value;
 
-    const stopPrice = getFare(selectedPickupVal, selectedDropoffVal);
+    const stopPrice = getFare(data.title, selectedPickupVal, selectedDropoffVal);
 
     const passengersCount = parseInt(passengersInput.value) || 1;
     
@@ -420,11 +396,21 @@ function initBookingForm() {
     
     const additionalLuggage = parseInt(luggageInput.value) || 0;
 
-    // Pricing rules:
-    // 1 piece up to 20kg free per passenger. Additional luggage: 300 руб. per piece.
-    const ticketTotal = stopPrice * passengersCount;
-    const luggageTotal = additionalLuggage * 300;
-    const totalCost = ticketTotal + luggageTotal;
+    let ticketPriceText = "—";
+    let totalPriceText = "—";
+
+    if (selectedPickupVal && selectedDropoffVal) {
+      if (stopPrice !== null) {
+        const ticketTotal = stopPrice * passengersCount;
+        const luggageTotal = additionalLuggage * 300;
+        const totalCost = ticketTotal + luggageTotal;
+        ticketPriceText = `${stopPrice} руб. × ${passengersCount}`;
+        totalPriceText = `${totalCost} руб.`;
+      } else {
+        ticketPriceText = "Цена уточняется";
+        totalPriceText = "Цена уточняется";
+      }
+    }
 
     // Update Summary UI
     if (summaryRoute) summaryRoute.textContent = data.title;
@@ -447,10 +433,10 @@ function initBookingForm() {
     if (summaryLuggage) summaryLuggage.textContent = `${additionalLuggage} доп. мест`;
     
     if (summaryPrice) {
-      summaryPrice.textContent = `${stopPrice} руб. × ${passengersCount}`;
+      summaryPrice.textContent = ticketPriceText;
     }
     if (summaryTotal) {
-      summaryTotal.textContent = `${totalCost} руб.`;
+      summaryTotal.textContent = totalPriceText;
     }
   }
 
@@ -600,7 +586,7 @@ function initBookingForm() {
     }
 
     // Get fare price from matrix
-    const stopPrice = getFare(pickupVal, dropoffVal);
+    const stopPrice = getFare(data.title, pickupVal, dropoffVal);
     
     // Formatting date
     const dateVal = new Date(dateInputVal);
@@ -609,9 +595,13 @@ function initBookingForm() {
       : dateInputVal;
 
     // Calculation total price
-    const ticketTotal = stopPrice * passengersCount;
+    const hasPrice = (stopPrice !== null);
     const luggageTotal = additionalLuggage * 300;
-    const totalCost = ticketTotal + luggageTotal;
+    const ticketTotal = hasPrice ? (stopPrice * passengersCount) : 0;
+    const totalCost = hasPrice ? (ticketTotal + luggageTotal) : 0;
+
+    const ticketPriceLabel = hasPrice ? `${stopPrice} руб. × ${passengersCount}` : "Цена уточняется";
+    const totalPriceLabel = hasPrice ? `${totalCost} руб.` : "Цена уточняется";
 
     // Compose formatted email message
     let emailMessage = `Новая заявка с сайта Лидер Юг\n\n`;
@@ -634,9 +624,9 @@ function initBookingForm() {
     emailMessage += `\n`;
     
     emailMessage += `ОПЛАТА:\n`;
-    emailMessage += `Цена билета: ${stopPrice} руб. × ${passengersCount}\n`;
+    emailMessage += `Цена билета: ${ticketPriceLabel}\n`;
     emailMessage += `Доп. багаж: 300 руб. / шт (всего: ${luggageTotal} руб.)\n`;
-    emailMessage += `Итого к оплате: ${totalCost} руб.\n\n`;
+    emailMessage += `Итого к оплате: ${totalPriceLabel}\n\n`;
     
     emailMessage += `Источник: сайт Лидер Юг\n`;
     emailMessage += `Время заявки: ${new Date().toLocaleString("ru-RU")}`;
@@ -667,9 +657,9 @@ function initBookingForm() {
           passenger_name: name,
           phone: phone,
           preferred_messenger: preferredMessenger,
-          ticket_price: `${stopPrice} руб. × ${passengersCount}`,
+          ticket_price: ticketPriceLabel,
           baggage_price: "300 руб. / шт",
-          total_price: `${totalCost} руб.`,
+          total_price: totalPriceLabel,
           comment: comment,
           source: "Сайт Лидер Юг",
           submitted_at: new Date().toLocaleString("ru-RU"),
