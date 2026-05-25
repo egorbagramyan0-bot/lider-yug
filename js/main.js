@@ -112,7 +112,8 @@ function initBookingForm() {
   if (!bookingForm) return;
 
   const routeSelect = document.getElementById('route');
-  const stopSelect = document.getElementById('stop');
+  const pickupSelect = document.getElementById('pickup_location');
+  const dropoffSelect = document.getElementById('dropoff_location');
   const departureTimeSelect = document.getElementById('departure_time');
   const dateInput = document.getElementById('booking_date');
   const passengersInput = document.getElementById('passengers');
@@ -120,7 +121,8 @@ function initBookingForm() {
 
   // Summary Elements
   const summaryRoute = document.getElementById('summary-route');
-  const summaryStop = document.getElementById('summary-stop');
+  const summaryPickup = document.getElementById('summary-pickup');
+  const summaryDropoff = document.getElementById('summary-dropoff');
   const summaryDate = document.getElementById('summary-date');
   const summaryTime = document.getElementById('summary-time');
   const summaryPassengers = document.getElementById('summary-passengers');
@@ -170,14 +172,31 @@ function initBookingForm() {
     const data = routeData[selectedRoute];
     if (!data) return;
 
-    // Update Stops dropdown
-    stopSelect.innerHTML = '';
+    // Update Pickup Locations dropdown
+    pickupSelect.innerHTML = '';
+    const pickupLocations = selectedRoute === 'rostov-volgograd' 
+      ? [{ value: 'rostov', text: 'Ростов-на-Дону' }] 
+      : [
+          { value: 'volgograd', text: 'Волгоград' },
+          { value: 'volgograd_kalach', text: 'Волгоград (Калач-на-Дону)' }
+        ];
+
+    pickupLocations.forEach(loc => {
+      const option = document.createElement('option');
+      option.value = loc.value;
+      option.textContent = loc.text;
+      pickupSelect.appendChild(option);
+    });
+
+    // Update Dropoff Locations (Stops) dropdown
+    dropoffSelect.innerHTML = '';
     data.stops.forEach(stop => {
       const option = document.createElement('option');
       option.value = stop.value;
       option.dataset.price = stop.price;
-      option.textContent = stop.text;
-      stopSelect.appendChild(option);
+      // Strip price tag from the option text for a cleaner look
+      option.textContent = stop.text.split(' — ')[0];
+      dropoffSelect.appendChild(option);
     });
 
     // Update Times dropdown
@@ -198,7 +217,7 @@ function initBookingForm() {
     const data = routeData[selectedRoute];
     if (!data) return;
 
-    const selectedStopVal = stopSelect.value;
+    const selectedStopVal = dropoffSelect.value;
     const selectedStop = data.stops.find(s => s.value === selectedStopVal);
     const stopPrice = selectedStop ? selectedStop.price : 3500;
 
@@ -222,7 +241,14 @@ function initBookingForm() {
 
     // Update Summary UI
     if (summaryRoute) summaryRoute.textContent = data.title;
-    if (summaryStop) summaryStop.textContent = selectedStop ? selectedStop.text.split(' — ')[0] : '';
+    
+    if (summaryPickup) {
+      summaryPickup.textContent = pickupSelect.options[pickupSelect.selectedIndex] ? pickupSelect.options[pickupSelect.selectedIndex].text : '';
+    }
+    if (summaryDropoff) {
+      summaryDropoff.textContent = dropoffSelect.options[dropoffSelect.selectedIndex] ? dropoffSelect.options[dropoffSelect.selectedIndex].text : '';
+    }
+
     if (summaryDate) {
       const dateVal = new Date(dateInput.value);
       summaryDate.textContent = !isNaN(dateVal.getTime()) 
@@ -252,7 +278,8 @@ function initBookingForm() {
 
   // Listen for changes
   if (routeSelect) routeSelect.addEventListener('change', updateRouteFields);
-  if (stopSelect) stopSelect.addEventListener('change', calculatePrice);
+  if (pickupSelect) pickupSelect.addEventListener('change', calculatePrice);
+  if (dropoffSelect) dropoffSelect.addEventListener('change', calculatePrice);
   if (departureTimeSelect) departureTimeSelect.addEventListener('change', calculatePrice);
   if (dateInput) dateInput.addEventListener('change', calculatePrice);
   if (passengersInput) {
@@ -344,6 +371,19 @@ function initBookingForm() {
       showError('Пожалуйста, выберите направление поездки.');
       return;
     }
+    const pickupVal = pickupSelect.value;
+    const pickupText = pickupSelect.options[pickupSelect.selectedIndex] ? pickupSelect.options[pickupSelect.selectedIndex].text : '';
+    const dropoffVal = dropoffSelect.value;
+    const dropoffText = dropoffSelect.options[dropoffSelect.selectedIndex] ? dropoffSelect.options[dropoffSelect.selectedIndex].text : '';
+
+    if (!pickupVal) {
+      showError('Пожалуйста, выберите место посадки.');
+      return;
+    }
+    if (!dropoffVal) {
+      showError('Пожалуйста, выберите место высадки.');
+      return;
+    }
     if (!dateInputVal) {
       showError('Пожалуйста, выберите дату поездки.');
       return;
@@ -362,9 +402,7 @@ function initBookingForm() {
     }
 
     // Get stop details
-    const selectedOption = stopSelect.options[stopSelect.selectedIndex];
-    const stopOptionText = selectedOption ? selectedOption.text : '';
-    const stopText = stopOptionText.split(' — ')[0];
+    const selectedOption = dropoffSelect.options[dropoffSelect.selectedIndex];
     const stopPrice = selectedOption ? parseInt(selectedOption.dataset.price) : 3500;
     
     // Formatting date
@@ -382,7 +420,8 @@ function initBookingForm() {
     let emailMessage = `Новая заявка с сайта Лидер Юг\n\n`;
     emailMessage += `ДАННЫЕ ПОЕЗДКИ:\n`;
     emailMessage += `Направление: ${data.title}\n`;
-    emailMessage += `Остановка: ${stopOptionText}\n`;
+    emailMessage += `Место посадки: ${pickupText}\n`;
+    emailMessage += `Место высадки: ${dropoffText}\n`;
     emailMessage += `Дата поездки: ${dateFormatted}\n`;
     emailMessage += `Время отправления: ${departureTime}\n`;
     emailMessage += `Пассажиров: ${passengersCount}\n`;
@@ -422,7 +461,8 @@ function initBookingForm() {
           from_name: "Сайт Лидер Юг",
           botcheck: botcheck,
           route: data.title,
-          stop: stopOptionText,
+          pickup_location: pickupText,
+          dropoff_location: dropoffText,
           trip_date: dateFormatted,
           departure_time: departureTime,
           passengers_count: passengersCount,

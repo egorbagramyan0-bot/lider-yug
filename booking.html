@@ -94,9 +94,16 @@
               </div>
             </div>
 
-            <div class="form-field form-grid-full">
-              <label for="stop">Остановка посадки / высадки</label>
-              <select id="stop" required>
+            <div class="form-field">
+              <label for="pickup_location">Место посадки</label>
+              <select id="pickup_location" required>
+                <!-- Filled dynamically by main.js -->
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="dropoff_location">Место высадки</label>
+              <select id="dropoff_location" required>
                 <!-- Filled dynamically by main.js -->
               </select>
             </div>
@@ -211,8 +218,12 @@
             <span id="summary-route">Ростов-на-Дону → Волгоград</span>
           </li>
           <li class="summary-item">
-            <span>Остановка:</span>
-            <span id="summary-stop">—</span>
+            <span>Посадка:</span>
+            <span id="summary-pickup">—</span>
+          </li>
+          <li class="summary-item">
+            <span>Высадка:</span>
+            <span id="summary-dropoff">—</span>
           </li>
           <li class="summary-item">
             <span>Дата поездки:</span>
@@ -352,7 +363,7 @@
       const luggageVal = urlParams.get('luggage');
 
       const routeSelect = document.getElementById('route');
-      const stopSelect = document.getElementById('stop');
+      const dropoffSelect = document.getElementById('dropoff_location');
       const dateInput = document.getElementById('booking_date');
       const timeSelect = document.getElementById('departure_time');
       const passInput = document.getElementById('passengers');
@@ -364,9 +375,9 @@
         routeSelect.dispatchEvent(new Event('change'));
       }
       
-      if (stopVal && stopSelect) {
-        stopSelect.value = stopVal;
-        stopSelect.dispatchEvent(new Event('change'));
+      if (stopVal && dropoffSelect) {
+        dropoffSelect.value = stopVal;
+        dropoffSelect.dispatchEvent(new Event('change'));
       }
 
       if (dateVal && dateInput) {
