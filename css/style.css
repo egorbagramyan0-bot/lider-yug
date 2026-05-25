@@ -391,7 +391,7 @@ h4 { font-size: 1.25rem; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(17, 19, 21, 0.85) 0%, rgba(17, 19, 21, 0.55) 100%);
+  background: linear-gradient(90deg, rgba(17, 19, 21, 0.9) 0%, rgba(17, 19, 21, 0.55) 45%, rgba(17, 19, 21, 0.15) 100%);
   z-index: 1;
 }
 
@@ -403,6 +403,36 @@ h4 { font-size: 1.25rem; }
   grid-template-columns: 1.2fr 0.8fr;
   gap: 4rem;
   align-items: center;
+}
+
+/* Desktop Hero Image and Composition Optimization */
+@media (min-width: 1025px) {
+  .hero {
+    background-size: cover !important;
+    background-position: 15% 100% !important; /* Keep car visible at the bottom and shift slightly to left/center */
+    min-height: 650px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .hero-content {
+    padding: 7rem 0 9rem !important; /* Add premium breathing room */
+  }
+}
+
+/* Wider viewports adjustments to maintain vehicle framing */
+@media (min-width: 1440px) {
+  .hero {
+    background-position: 12% 100% !important; /* Align position for larger monitors */
+    min-height: 700px !important;
+  }
+}
+
+@media (min-width: 1680px) {
+  .hero {
+    background-position: 8% 100% !important;
+    min-height: 750px !important;
+  }
 }
 
 .hero-text-desktop {
