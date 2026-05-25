@@ -405,6 +405,14 @@ h4 { font-size: 1.25rem; }
   align-items: center;
 }
 
+.hero-text-desktop {
+  display: block;
+}
+
+.hero-text-mobile {
+  display: none;
+}
+
 .hero-text h1 {
   margin-bottom: 1.5rem;
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -2560,75 +2568,190 @@ h4 { font-size: 1.25rem; }
 
   /* Hero Section adaptations */
   .hero {
-    background-position: 65% center !important; /* shift background slightly to crop nicely */
+    background-image: none !important;
+    background-color: var(--color-bg) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
   
   .hero::before {
-    background: linear-gradient(to bottom, rgba(17, 19, 21, 0.9) 0%, rgba(17, 19, 21, 0.75) 100%) !important;
+    display: none !important;
   }
 
   .hero-content {
-    padding: 2.5rem 0 3.5rem !important;
-    gap: 2rem !important;
+    padding: 0 !important;
+    gap: 0 !important;
   }
 
   .hero-text {
+    position: relative !important;
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    background-image: url('../public/hero_mobile.png') !important;
+    background-size: cover !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    padding: 3.5rem 1.5rem 4.5rem !important;
+    box-sizing: border-box !important;
+    color: white !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
     text-align: center !important;
   }
 
-  .hero-text h1 {
+  .hero-text::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(180deg, rgba(17, 19, 21, 0.75) 0%, rgba(17, 19, 21, 0.45) 50%, rgba(17, 19, 21, 0.75) 100%) !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+
+  .hero-text-desktop {
+    display: none !important;
+  }
+
+  .hero-text-mobile {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .route-badge-mobile {
+    background-color: var(--color-accent) !important;
+    color: white !important;
+    padding: 0.3rem 0.85rem !important;
+    border-radius: 50px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin-bottom: 0.75rem !important;
+    display: inline-block !important;
+  }
+
+  .hero-title-mobile {
     font-size: 1.85rem !important;
-    line-height: 1.3 !important;
+    line-height: 1.25 !important;
+    font-weight: 800 !important;
+    margin-bottom: 0.5rem !important;
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .hero-subtitle-mobile {
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    color: var(--color-secondary) !important;
     margin-bottom: 1rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
   }
 
-  .hero-text p {
-    font-size: 1rem !important;
-    margin-bottom: 1.5rem !important;
+  .hero-desc-mobile {
+    font-size: 0.95rem !important;
     line-height: 1.5 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 2rem !important;
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-weight: 400 !important;
   }
 
-  /* Hero stats dashboard grid */
-  .hero-stats {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0.5rem !important;
-    margin-top: 1.5rem !important;
+  .hero-cta-mobile {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
     width: 100% !important;
   }
 
-  .hero-stat-item {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 12px !important;
-    padding: 0.75rem 0.25rem !important;
-    text-align: center !important;
+  .btn-book-mobile {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    padding: 0.85rem 1.75rem !important;
+    border-radius: var(--border-radius-md) !important;
+    background-color: var(--color-secondary) !important;
+    color: var(--color-primary) !important;
+    border: 1.5px solid var(--color-secondary) !important;
+    box-shadow: 0 4px 14px rgba(200, 154, 74, 0.3) !important;
+    transition: all var(--transition-normal) !important;
   }
 
-  .hero-stat-item h3 {
-    font-size: 1.15rem !important;
-    margin-bottom: 0.15rem !important;
+  .btn-book-mobile:hover, .btn-book-mobile:active {
+    background-color: var(--color-secondary-hover) !important;
+    border-color: var(--color-secondary-hover) !important;
+    transform: translateY(-1px) !important;
   }
 
-  .hero-stat-item p {
-    font-size: 0.7rem !important;
-    opacity: 0.85 !important;
-    line-height: 1.2 !important;
+  .btn-call-mobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    padding: 0.85rem 1.5rem !important;
+    border-radius: var(--border-radius-md) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    transition: all var(--transition-normal) !important;
+  }
+
+  .btn-call-mobile:hover, .btn-call-mobile:active {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  .btn-call-mobile svg {
+    stroke: currentColor !important;
+  }
+
+  @media (max-width: 480px) {
+    .hero-cta-mobile {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      max-width: 320px !important;
+      margin: 0 auto !important;
+      gap: 0.75rem !important;
+    }
+    .btn-book-mobile, .btn-call-mobile {
+      width: 100% !important;
+      text-align: center !important;
+    }
   }
 
   /* Quick Book Widget */
   .hero-widget-card {
-    padding: 1.5rem 1.25rem !important;
-    border-radius: 16px !important;
-    margin: 0 auto !important;
+    padding: 1.75rem 1.5rem !important;
+    border-radius: var(--border-radius-lg) !important;
+    margin: 2.5rem auto 3rem !important;
     width: 100% !important;
-    box-shadow: 0 8px 30px rgba(17, 19, 21, 0.08) !important;
+    max-width: 480px !important;
+    box-shadow: var(--shadow-lg) !important;
+    background: var(--color-card-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    box-sizing: border-box !important;
   }
 
   .hero-widget-card h3 {
-    font-size: 1.15rem !important;
-    margin-bottom: 1rem !important;
+    font-size: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
     text-align: center !important;
+    color: var(--color-text) !important;
   }
 
   .route-form-group {
