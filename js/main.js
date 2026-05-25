@@ -130,30 +130,153 @@ function initBookingForm() {
   const summaryPrice = document.getElementById('summary-price');
   const summaryTotal = document.getElementById('summary-total-price');
 
+  // Route Stops Definitions
+  const routeStopsForward = [
+    "Ростов-на-Дону",
+    "Шахты",
+    "Зверево",
+    "Лиховской мост",
+    "Калитва",
+    "Тацинская",
+    "Морозовск",
+    "Чернышковский",
+    "Обливская",
+    "Суровикино",
+    "Калач-на-Дону",
+    "Волгоград"
+  ];
+
+  const routeStopsBackward = [
+    "Волгоград",
+    "Калач-на-Дону",
+    "Суровикино",
+    "Обливская",
+    "Чернышковский",
+    "Морозовск",
+    "Тацинская",
+    "Калитва",
+    "Лиховской мост",
+    "Зверево",
+    "Шахты",
+    "Ростов-на-Дону"
+  ];
+
+  // Fare Matrix for Pair-based Tariff lookups
+  const fareMatrix = {
+    // Forward direction: Rostov-on-Don -> Volgograd
+    "Ростов-на-Дону|Волгоград": 3500,
+    "Ростов-на-Дону|Калач-на-Дону": 3500,
+    "Ростов-на-Дону|Суровикино": 3000,
+    "Ростов-на-Дону|Обливская": 3000,
+    "Ростов-на-Дону|Чернышковский": 3000,
+    "Ростов-на-Дону|Морозовск": 2700,
+    "Ростов-на-Дону|Тацинская": 3000,
+    "Ростов-на-Дону|Калитва": 3000,
+    "Ростов-на-Дону|Лиховской мост": 3000,
+    
+    "Шахты|Волгоград": 3500,
+    "Шахты|Калач-на-Дону": 3500,
+    "Шахты|Суровикино": 3000,
+    "Шахты|Обливская": 3000,
+    "Шахты|Чернышковский": 3000,
+    "Шахты|Морозовск": 2700,
+    "Шахты|Тацинская": 3000,
+    "Шахты|Калитва": 3000,
+    "Шахты|Лиховской мост": 3000,
+
+    "Зверево|Волгоград": 3500,
+    "Зверево|Калач-на-Дону": 3500,
+    "Зверево|Суровикино": 3000,
+    "Зверево|Обливская": 3000,
+    "Зверево|Чернышковский": 3000,
+    "Зверево|Морозовск": 2700,
+    "Зверево|Тацинская": 3000,
+    "Зверево|Калитва": 3000,
+    "Зверево|Лиховской мост": 3000,
+
+    "Лиховской мост|Волгоград": 3000,
+    "Лиховской мост|Калач-на-Дону": 3000,
+    "Калитва|Волгоград": 3000,
+    "Калитва|Калач-на-Дону": 3000,
+    "Тацинская|Волгоград": 3000,
+    "Тацинская|Калач-на-Дону": 3000,
+
+    "Морозовск|Волгоград": 2700,
+    "Морозовск|Калач-на-Дону": 2700,
+
+    "Чернышковский|Волгоград": 3000,
+    "Чернышковский|Калач-на-Дону": 3000,
+    "Обливская|Волгоград": 3000,
+    "Обливская|Калач-на-Дону": 3000,
+    "Суровикино|Волгоград": 3000,
+    "Суровикино|Калач-на-Дону": 3000,
+
+    // Backward direction: Volgograd -> Rostov-on-Don
+    "Волгоград|Ростов-на-Дону": 3500,
+    "Волгоград|Шахты": 3500,
+    "Волгоград|Зверево": 3500,
+    "Волгоград|Лиховской мост": 3000,
+    "Волгоград|Калитва": 3000,
+    "Волгоград|Тацинская": 3000,
+    "Волгоград|Морозовск": 2700,
+    "Волгоград|Чернышковский": 3000,
+    "Волгоград|Обливская": 3000,
+    "Волгоград|Суровикино": 3000,
+
+    "Калач-на-Дону|Ростов-на-Дону": 3500,
+    "Калач-на-Дону|Шахты": 3500,
+    "Калач-на-Дону|Зверево": 3500,
+    "Калач-на-Дону|Лиховской мост": 3000,
+    "Калач-на-Дону|Калитва": 3000,
+    "Калач-на-Дону|Тацинская": 3000,
+    "Калач-на-Дону|Морозовск": 2700,
+    
+    "Морозовск|Ростов-на-Дону": 2700,
+    "Морозовск|Шахты": 2700,
+    "Морозовск|Зверево": 2700,
+    "Морозовск|Лиховской мост": 2700,
+    "Морозовск|Калитва": 2700,
+    "Морозовск|Тацинская": 2700,
+
+    "Суровикино|Ростов-на-Дону": 3000,
+    "Суровикино|Шахты": 3000,
+    "Суровикино|Зверево": 3000,
+    "Суровикино|Лиховской мост": 2700,
+    "Суровикино|Калитва": 2700,
+    "Суровикино|Тацинская": 2700,
+
+    "Обливская|Ростов-на-Дону": 3000,
+    "Обливская|Шахты": 3000,
+    "Обливская|Зверево": 3000,
+    "Обливская|Лиховской мост": 2700,
+    "Обливская|Калитва": 2700,
+    "Обливская|Тацинская": 2700,
+
+    "Чернышковский|Ростов-на-Дону": 3000,
+    "Чернышковский|Шахты": 3000,
+    "Чернышковский|Зверево": 3000,
+    "Чернышковский|Лиховской мост": 2700,
+    "Чернышковский|Калитва": 2700,
+    "Чернышковский|Тацинская": 2700
+  };
+
+  function getFare(pickupStop, dropoffStop) {
+    if (!pickupStop || !dropoffStop) return 3500;
+    const key = `${pickupStop}|${dropoffStop}`;
+    return fareMatrix[key] ?? 3500;
+  }
+
   // Fare and Route Matrix
   const routeData = {
     'rostov-volgograd': {
       title: 'Ростов-на-Дону → Волгоград',
       times: ['08:00', '17:00'],
-      stops: [
-        { value: 'volgograd', text: 'Волгоград — 3500 руб.', price: 3500 },
-        { value: 'volgograd_kolach', text: 'Волгоград (Колач-на-Дону) — 3500 руб.', price: 3500 },
-        { value: 'surovikino', text: 'Суровикино, Чернышковский, Обливская — 3000 руб.', price: 3000 },
-        { value: 'belaya_kalitva', text: 'Лиховской мост, Калитва, Шолоховский, Тацинская — 3000 руб.', price: 3000 },
-        { value: 'morozovsk', text: 'Морозовск — 2700 руб.', price: 2700 }
-      ]
+      stops: routeStopsForward
     },
     'volgograd-rostov': {
-      title: 'Волгоград → Ростов-на-Дону',
+      title: 'Волгоград → Rostov-на-Дону',
       times: ['08:00', '16:00'],
-      stops: [
-        { value: 'rostov', text: 'Ростов, Шахты, Колос — 3500 руб.', price: 3500 },
-        { value: 'kalitva_lukhov', text: 'Тацинская, Шолоховский, Калитва, Лиховской мост — 3000 руб.', price: 3000 },
-        { value: 'morozovsk_short', text: 'Морозовск (из Волгограда) — 2700 руб.', price: 2700 },
-        { value: 'surovikino_rostov', text: 'Суровикино, Обливская, Чернышковский → Ростов, Шахты — 3000 руб.', price: 3000 },
-        { value: 'surovikino_kalitva', text: 'Суровикино, Обливская, Чернышковский → Тацинская, Калитва — 2700 руб.', price: 2700 },
-        { value: 'morozovsk_rostov', text: 'Морозовск → Ростов, Шахты — 2700 руб.', price: 2700 }
-      ]
+      stops: routeStopsBackward
     }
   };
 
@@ -173,33 +296,6 @@ function initBookingForm() {
     const data = routeData[selectedRoute];
     if (!data) return;
 
-    // Update Pickup Locations dropdown
-    pickupSelect.innerHTML = '';
-    const pickupLocations = selectedRoute === 'rostov-volgograd' 
-      ? [{ value: 'rostov', text: 'Ростов-на-Дону' }] 
-      : [
-          { value: 'volgograd', text: 'Волгоград' },
-          { value: 'volgograd_kolach', text: 'Волгоград (Колач-на-Дону)' }
-        ];
-
-    pickupLocations.forEach(loc => {
-      const option = document.createElement('option');
-      option.value = loc.value;
-      option.textContent = loc.text;
-      pickupSelect.appendChild(option);
-    });
-
-    // Update Dropoff Locations (Stops) dropdown
-    dropoffSelect.innerHTML = '';
-    data.stops.forEach(stop => {
-      const option = document.createElement('option');
-      option.value = stop.value;
-      option.dataset.price = stop.price;
-      // Strip price tag from the option text for a cleaner look
-      option.textContent = stop.text.split(' — ')[0];
-      dropoffSelect.appendChild(option);
-    });
-
     // Update Times dropdown
     departureTimeSelect.innerHTML = '';
     data.times.forEach(time => {
@@ -208,6 +304,95 @@ function initBookingForm() {
       option.textContent = time;
       departureTimeSelect.appendChild(option);
     });
+
+    // Reset Pickup Locations dropdown
+    pickupSelect.innerHTML = '';
+    const pickupPlaceholder = document.createElement('option');
+    pickupPlaceholder.value = '';
+    pickupPlaceholder.disabled = true;
+    pickupPlaceholder.selected = true;
+    pickupPlaceholder.textContent = 'Выберите место посадки';
+    pickupSelect.appendChild(pickupPlaceholder);
+
+    // Populate pickup select options (all stops except the very last one)
+    const stops = data.stops;
+    for (let i = 0; i < stops.length - 1; i++) {
+      const option = document.createElement('option');
+      option.value = stops[i];
+      option.textContent = stops[i];
+      pickupSelect.appendChild(option);
+    }
+
+    // Reset and disable Dropoff Locations dropdown
+    dropoffSelect.innerHTML = '';
+    const dropoffPlaceholder = document.createElement('option');
+    dropoffPlaceholder.value = '';
+    dropoffPlaceholder.disabled = true;
+    dropoffPlaceholder.selected = true;
+    dropoffPlaceholder.textContent = 'Сначала выберите место посадки';
+    dropoffSelect.appendChild(dropoffPlaceholder);
+    dropoffSelect.disabled = true;
+
+    calculatePrice();
+  }
+
+  // Update available dropoff fields based on pickup selection
+  function updateDropoffFields() {
+    const selectedRoute = routeSelect.value;
+    const data = routeData[selectedRoute];
+    if (!data) return;
+
+    const selectedPickup = pickupSelect.value;
+    if (!selectedPickup) {
+      dropoffSelect.innerHTML = '';
+      const dropoffPlaceholder = document.createElement('option');
+      dropoffPlaceholder.value = '';
+      dropoffPlaceholder.disabled = true;
+      dropoffPlaceholder.selected = true;
+      dropoffPlaceholder.textContent = 'Сначала выберите место посадки';
+      dropoffSelect.appendChild(dropoffPlaceholder);
+      dropoffSelect.disabled = true;
+      calculatePrice();
+      return;
+    }
+
+    // Find pickup index in route stops
+    const stops = data.stops;
+    const pickupIndex = stops.indexOf(selectedPickup);
+    if (pickupIndex === -1) return;
+
+    const previousDropoffVal = dropoffSelect.value;
+
+    dropoffSelect.innerHTML = '';
+    dropoffSelect.disabled = false;
+
+    const dropoffPlaceholder = document.createElement('option');
+    dropoffPlaceholder.value = '';
+    dropoffPlaceholder.disabled = true;
+    dropoffPlaceholder.selected = true;
+    dropoffPlaceholder.textContent = 'Выберите место высадки';
+    dropoffSelect.appendChild(dropoffPlaceholder);
+
+    // Only add stops after the pickup index
+    const availableStops = stops.slice(pickupIndex + 1);
+    let isPreviousDropoffValid = false;
+
+    availableStops.forEach(stop => {
+      const option = document.createElement('option');
+      option.value = stop;
+      option.textContent = stop;
+      dropoffSelect.appendChild(option);
+
+      if (stop === previousDropoffVal) {
+        isPreviousDropoffValid = true;
+      }
+    });
+
+    if (isPreviousDropoffValid && previousDropoffVal) {
+      dropoffSelect.value = previousDropoffVal;
+    } else {
+      dropoffSelect.value = '';
+    }
 
     calculatePrice();
   }
@@ -218,9 +403,10 @@ function initBookingForm() {
     const data = routeData[selectedRoute];
     if (!data) return;
 
-    const selectedStopVal = dropoffSelect.value;
-    const selectedStop = data.stops.find(s => s.value === selectedStopVal);
-    const stopPrice = selectedStop ? selectedStop.price : 3500;
+    const selectedPickupVal = pickupSelect.value;
+    const selectedDropoffVal = dropoffSelect.value;
+
+    const stopPrice = getFare(selectedPickupVal, selectedDropoffVal);
 
     const passengersCount = parseInt(passengersInput.value) || 1;
     
@@ -244,10 +430,10 @@ function initBookingForm() {
     if (summaryRoute) summaryRoute.textContent = data.title;
     
     if (summaryPickup) {
-      summaryPickup.textContent = pickupSelect.options[pickupSelect.selectedIndex] ? pickupSelect.options[pickupSelect.selectedIndex].text : '';
+      summaryPickup.textContent = selectedPickupVal || '—';
     }
     if (summaryDropoff) {
-      summaryDropoff.textContent = dropoffSelect.options[dropoffSelect.selectedIndex] ? dropoffSelect.options[dropoffSelect.selectedIndex].text : '';
+      summaryDropoff.textContent = selectedDropoffVal || '—';
     }
 
     if (summaryDate) {
@@ -256,7 +442,7 @@ function initBookingForm() {
         ? dateVal.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) 
         : dateInput.value;
     }
-    if (summaryTime) summaryTime.textContent = departureTimeSelect.value;
+    if (summaryTime) summaryTime.textContent = departureTimeSelect.value || '—';
     if (summaryPassengers) summaryPassengers.textContent = `${passengersCount} чел.`;
     if (summaryLuggage) summaryLuggage.textContent = `${additionalLuggage} доп. мест`;
     
@@ -279,7 +465,7 @@ function initBookingForm() {
 
   // Listen for changes
   if (routeSelect) routeSelect.addEventListener('change', updateRouteFields);
-  if (pickupSelect) pickupSelect.addEventListener('change', calculatePrice);
+  if (pickupSelect) pickupSelect.addEventListener('change', updateDropoffFields);
   if (dropoffSelect) dropoffSelect.addEventListener('change', calculatePrice);
   if (departureTimeSelect) departureTimeSelect.addEventListener('change', calculatePrice);
   if (dateInput) dateInput.addEventListener('change', calculatePrice);
@@ -385,6 +571,17 @@ function initBookingForm() {
       showError('Пожалуйста, выберите место высадки.');
       return;
     }
+
+    // Verify route ordering sequence
+    const stops = data.stops;
+    const pickupIndex = stops.indexOf(pickupVal);
+    const dropoffIndex = stops.indexOf(dropoffVal);
+
+    if (pickupIndex === -1 || dropoffIndex === -1 || dropoffIndex <= pickupIndex) {
+      showError('Некорректный маршрут поездки. Место высадки должно быть после места посадки.');
+      return;
+    }
+
     if (!dateInputVal) {
       showError('Пожалуйста, выберите дату поездки.');
       return;
@@ -402,9 +599,8 @@ function initBookingForm() {
       return;
     }
 
-    // Get stop details
-    const selectedOption = dropoffSelect.options[dropoffSelect.selectedIndex];
-    const stopPrice = selectedOption ? parseInt(selectedOption.dataset.price) : 3500;
+    // Get fare price from matrix
+    const stopPrice = getFare(pickupVal, dropoffVal);
     
     // Formatting date
     const dateVal = new Date(dateInputVal);

@@ -97,14 +97,14 @@
             <div class="form-field">
               <label for="pickup_location">Место посадки</label>
               <select id="pickup_location" required>
-                <!-- Filled dynamically by main.js -->
+                <option value="" disabled selected>Выберите место посадки</option>
               </select>
             </div>
 
             <div class="form-field">
               <label for="dropoff_location">Место высадки</label>
-              <select id="dropoff_location" required>
-                <!-- Filled dynamically by main.js -->
+              <select id="dropoff_location" required disabled>
+                <option value="" disabled selected>Сначала выберите место посадки</option>
               </select>
             </div>
 
@@ -363,20 +363,42 @@
       const luggageVal = urlParams.get('luggage');
 
       const routeSelect = document.getElementById('route');
+      const pickupSelect = document.getElementById('pickup_location');
       const dropoffSelect = document.getElementById('dropoff_location');
       const dateInput = document.getElementById('booking_date');
       const timeSelect = document.getElementById('departure_time');
       const passInput = document.getElementById('passengers');
       const luggageInput = document.getElementById('luggage');
 
+      // Legacy stop query mapping
+      const stopMap = {
+        'volgograd': 'Волгоград',
+        'volgograd_kolach': 'Калач-на-Дону',
+        'surovikino': 'Суровикино',
+        'belaya_kalitva': 'Лиховской мост',
+        'morozovsk': 'Морозовск',
+        'rostov': 'Ростов-на-Дону',
+        'kalitva_lukhov': 'Лиховской мост',
+        'morozovsk_short': 'Морозовск',
+        'surovikino_rostov': 'Ростов-на-Дону',
+        'surovikino_kalitva': 'Тацинская',
+        'morozovsk_rostov': 'Ростов-на-Дону'
+      };
+
       if (routeVal && routeSelect) {
         routeSelect.value = routeVal;
-        // Trigger select change handler in main.js to update stops/times lists
         routeSelect.dispatchEvent(new Event('change'));
+        
+        // Auto-select the first pickup location (e.g. Rostov-on-Don or Volgograd)
+        if (pickupSelect && pickupSelect.options.length > 1) {
+          pickupSelect.selectedIndex = 1;
+          pickupSelect.dispatchEvent(new Event('change'));
+        }
       }
       
       if (stopVal && dropoffSelect) {
-        dropoffSelect.value = stopVal;
+        const targetStop = stopMap[stopVal] || stopVal;
+        dropoffSelect.value = targetStop;
         dropoffSelect.dispatchEvent(new Event('change'));
       }
 
