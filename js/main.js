@@ -995,7 +995,7 @@ function initContactForm() {
         whatsappMsg += `\n💬 Вопрос: ${message}`;
       }
 
-      const whatsappPhone = '79282294992'; 
+      const whatsappPhone = '79275116407'; 
       const encodedMsg = encodeURIComponent(whatsappMsg);
       const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodedMsg}`;
 
